@@ -1,0 +1,78 @@
+ACCOUNT_OWNER TABLE:
+CREATE TABLE `ACCOUNT_OWNER` (
+`f_name` varchar(50) DEFAULT NULL,
+`m_name` varchar(50) DEFAULT NULL,
+`l_name` varchar(50) DEFAULT NULL,
+`dob` varchar(100) DEFAULT NULL,
+`phone_number` varchar(15) DEFAULT NULL,
+`address` varchar(50) DEFAULT NULL,
+`account_number` varchar(25) NOT NULL,
+PRIMARY KEY (`account_number`),
+KEY `account_number` (`account_number`)
+);
+
+INCOME TABLE:
+CREATE TABLE `INCOME` (
+  `income_class` varchar(100) DEFAULT NULL,
+  `account_number` varchar(25) DEFAULT NULL,
+  `amount` float DEFAULT NULL,
+  `income_designation` varchar(15) DEFAULT NULL,
+  KEY `INCOME_ibfk_1` (`account_number`),
+  CONSTRAINT `INCOME_ibfk_1` FOREIGN KEY (`account_number`) REFERENCES `ACCOUNT_OWNER` (`account_number`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+EXPENSES TABLE: 
+CREATE TABLE `EXPENSES` (
+  `expense_class` varchar(100) DEFAULT NULL,
+  `account_number` varchar(25) DEFAULT NULL,
+  `amount` float DEFAULT NULL,
+  `expense_designation` varchar(15) DEFAULT NULL,
+  KEY `EXPENSES_ibfk_1` (`account_number`),
+  CONSTRAINT `EXPENSES_ibfk_1` FOREIGN KEY (`account_number`) REFERENCES `ACCOUNT_OWNER` (`account_number`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+ACCOUNTS TABLE:
+CREATE TABLE `ACCOUNTS` (
+  `chequing_number` varchar(50) DEFAULT NULL,
+  `savings_number` varchar(50) DEFAULT NULL,
+  `investing_number` varchar(50) DEFAULT NULL,
+  `account_number` varchar(25) NOT NULL,
+  PRIMARY KEY (`account_number`),
+  KEY `chequing_number` (`chequing_number`),
+  KEY `savings_number` (`savings_number`),
+  KEY `investing_number` (`investing_number`),
+  CONSTRAINT `ACCOUNTS_ibfk_1` FOREIGN KEY (`account_number`) REFERENCES `ACCOUNT_OWNER` (`account_number`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CHEQUING_ACCOUNT TABLE: 
+CREATE TABLE `CHEQUING_ACCOUNT` (
+  `account_total` float DEFAULT NULL,
+  `account_number` varchar(25) NOT NULL,
+  `chequing_number` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`account_number`),
+  KEY `chequing_number` (`chequing_number`),
+  CONSTRAINT `CHEQUING_ACCOUNT_ibfk_1` FOREIGN KEY (`account_number`) REFERENCES `ACCOUNT_OWNER` (`account_number`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `chequing_number` FOREIGN KEY (`chequing_number`) REFERENCES `ACCOUNTS` (`chequing_number`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+SAVINGS_ACCOUNT TABLE:
+CREATE TABLE `SAVINGS_ACCOUNT` (
+  `account_total` float DEFAULT NULL,
+  `account_number` varchar(25) NOT NULL,
+  `savings_number` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`account_number`),
+  KEY `savings_number` (`savings_number`),
+  CONSTRAINT `SAVINGS_ACCOUNT_ibfk_1` FOREIGN KEY (`account_number`) REFERENCES `ACCOUNT_OWNER` (`account_number`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `savings_number` FOREIGN KEY (`savings_number`) REFERENCES `ACCOUNTS` (`savings_number`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+INVESTING_ACCOUNT TABLE:
+CREATE TABLE `INVESTING_ACCOUNT` (
+  `account_total` float DEFAULT NULL,
+  `account_number` varchar(25) NOT NULL,
+  `investing_number` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`account_number`),
+  KEY `investing_number` (`investing_number`),
+  CONSTRAINT `INVESTING_ACCOUNT_ibfk_1` FOREIGN KEY (`account_number`) REFERENCES `ACCOUNT_OWNER` (`account_number`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `investing_number` FOREIGN KEY (`investing_number`) REFERENCES `ACCOUNTS` (`investing_number`) ON DELETE CASCADE ON UPDATE CASCADE
+);
